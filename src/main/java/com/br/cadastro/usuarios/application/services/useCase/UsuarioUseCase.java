@@ -6,8 +6,12 @@ public interface UsuarioUseCase {
 
     Usuario cadastraUsuario(Usuario user);
 
-    Usuario buscarUsuario(Usuario user);
+    Usuario validaUsuario(Usuario user);
 
-    Usuario atualizarUsuario(Usuario user, Long id);
+    Usuario atualizarUsuario(Usuario user, Long id, String username);
+
+    Usuario listarUsuario(Long id);
+
+    Usuario removerUsuario(Long id, String username);
 
 }

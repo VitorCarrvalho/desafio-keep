@@ -26,12 +26,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity httpSecurity) throws Exception {
 
         httpSecurity.csrf().disable()
-                //Não cheque essas requisições
                 .authorizeRequests()
-                .antMatchers( "/pessoa/authorization","/auth","/esquecisenha","/usuario/esquecisenha", "/usuario", "/pessoa/authenticate", "/configuration/**", "/webjars/**").permitAll()
-                .antMatchers(HttpMethod.OPTIONS, "/pessoa/resumo", "/esquecisenha", "/usuario", "/usuario/{id}", "/usuario/", "/pessoa", "/pessoa/{id}").permitAll()
+                .antMatchers( "authorization","/auth", "authenticate", "/configuration/**", "/webjars/**").permitAll()
+                .antMatchers(HttpMethod.OPTIONS, "/usuario", "/usuario/{id}", "/usuario/").permitAll()
 
-                //Qualquer outra requisição deve ser checada.
                 .anyRequest().authenticated().and().exceptionHandling().authenticationEntryPoint(jwtAuthenticationEntryPoint).and().sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         httpSecurity.addFilterBefore(requestFilter, UsernamePasswordAuthenticationFilter.class);

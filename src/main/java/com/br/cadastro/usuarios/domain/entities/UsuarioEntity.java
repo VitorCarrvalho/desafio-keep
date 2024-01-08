@@ -1,15 +1,16 @@
 package com.br.cadastro.usuarios.domain.entities;
 
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.*;
-import jakarta.persistence.Table;
+import javax.persistence.*;
+
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Date;
+
 @Getter
 @Setter
-@Table(name = "tabUsuario")
+@Table(name = "usuario")
 @Entity
 public class UsuarioEntity {
 
@@ -26,5 +27,35 @@ public class UsuarioEntity {
 
     @Column(name = "senha")
     private String senha;
+
+    @Column(name = "dataNascimento")
+    private Date dataNascimento;
+
+    @Embedded
+    private EnderecoEntity endereco;
+
+    @Column(name = "cpf")
+    private String cpf;
+
+    @Column(name = "status")
+    private String status;
+
+    @Column(name = "dataCriacao")
+    private Date dataCriacao;
+
+    @Column(name = "responsavelCriacao")
+    private String responsavelCriacao;
+
+    @Column(name = "dataAtualizacao")
+    private Date dataAtualizacao;
+
+    @Column(name = "responsavelAtualizacao")
+    private String responsavelAtualizacao;
+
+    @Column(name = "dataRemocao")
+    private Date dataRemocao;
+
+    @Column(name = "responsavelRemocao")
+    private String responsavelRemocao;
 
 }

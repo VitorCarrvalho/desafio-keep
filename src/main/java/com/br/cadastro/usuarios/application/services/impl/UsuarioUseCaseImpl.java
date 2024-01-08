@@ -2,11 +2,15 @@ package com.br.cadastro.usuarios.application.services.impl;
 
 
 import com.br.cadastro.usuarios.adapters.input.entities.Usuario;
+import com.br.cadastro.usuarios.application.services.mappers.UsuarioMapper;
 import com.br.cadastro.usuarios.application.services.useCase.UsuarioUseCase;
 import com.br.cadastro.usuarios.domain.entities.UsuarioEntity;
 import com.br.cadastro.usuarios.domain.repositories.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+
+import java.sql.Date;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -17,11 +21,10 @@ public class UsuarioUseCaseImpl implements UsuarioUseCase {
     @Autowired
     UsuarioRepository usuarioRepository;
 
-    public Usuario buscarUsuario(Usuario user) {
-        return getUsuario(user);
-    }
+    @Autowired
+    UsuarioMapper usuarioMapper;
 
-    private Usuario getUsuario(Usuario user) {
+    public Usuario validaUsuario(Usuario user) {
 
         UsuarioEntity novoUsuario = usuarioRepository.findByUsuario(user.getUsuario());
 
@@ -38,46 +41,58 @@ public class UsuarioUseCaseImpl implements UsuarioUseCase {
     }
 
     public Usuario cadastraUsuario(Usuario user) {
-        return cadastroUser(user);
-    }
 
-    private Usuario cadastroUser(Usuario user) {
-
-        UsuarioEntity entity = new UsuarioEntity();
-
-        entity.setUsuario(user.getUsuario());
-        entity.setNomeUser(user.getNome());
-        entity.setSenha(user.getSenha());
+        UsuarioEntity entity = usuarioMapper.usuarioToUsuarioEntityMapper(user);
 
         UsuarioEntity novoUsuario = usuarioRepository.save(entity);
 
-        return Usuario.builder()
-                .id(novoUsuario.getId())
-                .nome(novoUsuario.getNomeUser())
-                .usuario(novoUsuario.getUsuario())
-                .senha(novoUsuario.getSenha())
-                .build();
-    }
+        Usuario usuario = usuarioMapper.usuarioEntityToUsuario(novoUsuario);
+        usuario.setSenha("*****");
 
-    public Usuario atualizarUsuario(Usuario user, Long id){
-        return atualizaUser(user, id);
+        return usuario;
     }
-
-    private Usuario atualizaUser(Usuario user, Long id) {
+    public Usuario atualizarUsuario(Usuario user, Long id, String username) {
         Integer intId = (int) (long) id;
         Optional<UsuarioEntity> UsuarioExistente = Optional.ofNullable(usuarioRepository.findById(intId));
 
         if(UsuarioExistente.isPresent()){
             UsuarioEntity retornoExistente = UsuarioExistente.get();
-            retornoExistente.setSenha(user.getSenha());
-            UsuarioEntity usuarioAtualizado = usuarioRepository.save(retornoExistente);
+            long currentTimeMillis = System.currentTimeMillis();
+            retornoExistente.setDataAtualizacao(new Date(currentTimeMillis));
+            retornoExistente.setResponsavelAtualizacao(username);
+            UsuarioEntity usuarioEntityAtualizado = usuarioRepository.save(retornoExistente);
 
-           return Usuario.builder()
-                    .nome(usuarioAtualizado.getNomeUser())
-                    .usuario(usuarioAtualizado.getUsuario())
-                    .build();
+            Usuario usuarioAtualizado = usuarioMapper.usuarioEntityToUsuario(usuarioEntityAtualizado);
+
+           return usuarioAtualizado;
         }
 
         return null;
+    }
+
+    public Usuario listarUsuario(Long id){
+        Integer intId = (int) (long) id;
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(intId);
+
+        if(Objects.nonNull(usuarioEntity)){
+            Usuario usuario = usuarioMapper.usuarioEntityToUsuario(usuarioEntity);
+
+            return usuario;
+        }
+        return null;
+    }
+
+    public Usuario removerUsuario(Long id, String username){
+        Integer intId = (int) (long) id;
+        UsuarioEntity usuarioEntity = usuarioRepository.findById(intId);
+
+        long currentTimeMillis = System.currentTimeMillis();
+
+        usuarioEntity.setStatus("DESATIVADO");
+        usuarioEntity.setDataRemocao(new Date(currentTimeMillis));
+        usuarioEntity.setResponsavelRemocao(username);
+        UsuarioEntity userRemovido = usuarioRepository.saveAndFlush(usuarioEntity);
+        Usuario user = usuarioMapper.usuarioEntityToUsuario(userRemovido);
+        return user;
     }
 }

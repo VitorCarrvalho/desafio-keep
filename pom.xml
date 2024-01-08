@@ -5,7 +5,7 @@
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
-		<version>3.2.1</version>
+		<version>2.7.8</version>
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.br.cadastro</groupId>
@@ -21,7 +21,6 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
-
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
@@ -32,36 +31,6 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
-		<!-- RabbitMQ -->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-amqp</artifactId>
-		</dependency>
-		<!-- Fim RabbitMQ -->
-
-		<!-- INICIO DA DEPENDENCIA DO REDIS-->
-		<dependency>
-			<groupId>org.springframework.boot</groupId>
-			<artifactId>spring-boot-starter-data-redis</artifactId>
-		</dependency>
-		<!-- FIM DA DEPENDENCIA DO REDIS-->
-
-		<!--        JWT GERAR TOKEN-->
-
-		<!-- Elastic - Kibana		-->
-		<dependency>
-			<groupId>co.elastic.apm</groupId>
-			<artifactId>apm-agent-api</artifactId>
-			<version>1.28.0</version>
-		</dependency>
-
-		<dependency>
-			<groupId>co.elastic.apm</groupId>
-			<artifactId>apm-agent-attach</artifactId>
-			<version>1.28.0</version>
-		</dependency>
-		<!-- Elastic - Kibana		-->
-
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-security</artifactId>
@@ -76,13 +45,10 @@
 			<artifactId>jaxb-api</artifactId>
 			<version>2.3.1</version>
 		</dependency>
-		<!--FIM	JWT GERAR TOKEN-->
-
-		<!--		ACESSO AO BANCO DE DADOS-->
 		<dependency>
-			<groupId>com.microsoft.sqlserver</groupId>
-			<artifactId>mssql-jdbc</artifactId>
-			<version>9.4.0.jre11</version>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>8.0.23</version> <!-- Substitua pela versão mais recente, se necessário -->
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -90,30 +56,20 @@
 			<version>5.6.4.Final</version>
 		</dependency>
 		<dependency>
+			<groupId>org.hibernate.validator</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>7.0.2.Final</version>
+		</dependency>
+		<dependency>
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
 			<version>2.4.14</version>
 		</dependency>
-		<!--		FIM ACESSO AO BANCO DE DADOS-->
-
-		<!--		SWAGGER-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.springdoc</groupId>-->
-		<!--			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>-->
-		<!--			<version>2.0.0</version>-->
-		<!--		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.springdoc</groupId>-->
-		<!--			<artifactId>springdoc-openapi-ui</artifactId>-->
-		<!--			<version>1.6.14</version>-->
-		<!--		</dependency>-->
-		<!--		<dependency>-->
-		<!--			<groupId>org.springdoc</groupId>-->
-		<!--			<artifactId>springdoc-openapi-core</artifactId>-->
-		<!--			<version>1.6.4</version>-->
-		<!--		</dependency>-->
-
-		<!--		FIM SWAGGER-->
+		<dependency>
+			<groupId>org.springframework.security</groupId>
+			<artifactId>spring-security-config</artifactId>
+			<version>5.7.6</version>
+		</dependency>
 	</dependencies>
 
 	<build>

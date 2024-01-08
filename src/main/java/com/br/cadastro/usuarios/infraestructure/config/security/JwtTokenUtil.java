@@ -14,12 +14,12 @@ import io.jsonwebtoken.SignatureAlgorithm;
 
 
 @Component
-public class JwtTokenUtil implements Serializable {
+public class    JwtTokenUtil implements Serializable {
     private static final long serialVersionUID = -2550185165626007488L;
 
     public static final long JWT_TOKEN_EXPIRES = 120000;
 
-    private String secret =  "95f5746f772e6c883a12e81f4f382926115d17a226e81bcd016dc59fab818532cc5c73623f5ec2a1df7da68e0488bc4247d775ee92cb93973e29156a8211ae99";
+    private static String secret =  "95f5746f772e6c883a12e81f4f382926115d17a226e81bcd016dc59fab818532cc5c73623f5ec2a1df7da68e0488bc4247d775ee92cb93973e29156a8211ae99";
 
     //retorna o username do token do jwt
     public String getUsernameFronToken(String token) {
@@ -32,7 +32,18 @@ public class JwtTokenUtil implements Serializable {
         return claimsResolver.apply(claims);
     }
 
+    public static String extractUsername(String token) {
+        return extractClaim(token, Claims::getSubject);
+    }
 
+    private static <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+    private static Claims extractAllClaims(String token) {
+        return Jwts.parser().setSigningKey(secret).parseClaimsJws(token).getBody();
+    }
     //retorna expiration date do token jwt
     public Date getExpirationDateFromToken(String token){
         return getClaimFromToken(token, Claims::getExpiration);
