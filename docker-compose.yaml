@@ -1,0 +1,17 @@
+version: '3.8'
+
+services:
+  mysql-container:
+    image: mysql:latest
+    environment:
+      MYSQL_USER: sa
+      MYSQL_PASSWORD: 1234
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: usuarios
+    ports:
+      - "3306:3306"
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - ./script.sql:/docker-entrypoint-initdb.d/script.sql 
